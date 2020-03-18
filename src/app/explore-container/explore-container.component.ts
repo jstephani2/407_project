@@ -8,8 +8,15 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ExploreContainerComponent implements OnInit {
   @Input() name: string;
 
+  clickCounter : number = 0;
+
   constructor() { }
 
   ngOnInit() {}
+
+  onClick() {
+    console.log('works');
+    this.clickCounter++;
+  }
 
 }

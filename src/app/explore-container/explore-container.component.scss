@@ -1,3 +1,17 @@
+canvas {
+  border: 1px solid rgb(187, 178, 178);
+}
+ 
+.color-block {
+  height: 40px;
+}
+
+.buttonNav {
+  position: absolute;
+  top: 80%;
+  background-color: red($color: #8a2828);
+}
+
 #container {
   text-align: center;
 

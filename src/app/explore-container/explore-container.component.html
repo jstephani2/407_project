@@ -1,12 +1,15 @@
-<div id="container">
-  <!-- <strong>{{ name }}</strong>
-  <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p> -->
-  <ion-content>
-    <ion-fab vertical="center" horizontal="center" slot="fixed">
-      <ion-fab-button size="large" color="purple" (click)="onClick()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </ion-content>
+<ion-content>
+  <canvas #imageCanvas (mousedown)="startDrawing($event)" (touchstart)="startDrawing($event)"
+    (touchmove)="moved($event)" (mousemove)="moved($event)" (mouseup)="endDrawing()" (touchend)="endDrawing()"></canvas>
 
-</div>
+  <ion-fab vertical="start" horizontal="end" slot="fixed" class="buttonNav">
+    <ion-fab-button size="large" color="secondary" (click)="onStartClick()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab vertical="start" horizontal="start" slot="fixed" class="buttonNav">
+    <ion-fab-button size="large" color="secondary" (click)="onChartClick()">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

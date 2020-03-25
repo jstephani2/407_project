@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild } from '@angular/core';
-import { Platform, IonContent } from '@ionic/angular';
+import { Platform, IonContent, ModalController } from '@ionic/angular';
+import { AddMetricPage } from '../modals/add-metric/add-metric.page'
 
 @Component({
   selector: 'app-explore-container',
@@ -20,7 +21,7 @@ export class ExploreContainerComponent implements OnInit {
 
   clickCounter : number = 0;
 
-  constructor(private plt: Platform) { }
+  constructor(private plt: Platform, private modalController: ModalController) { }
 
   ngOnInit() {}
 
@@ -36,6 +37,25 @@ export class ExploreContainerComponent implements OnInit {
     this.centerX = this.originX + this.canvasElement.width/2;
     this.centerY = this.originY + this.canvasElement.height/2;
     this.ctx = this.canvasElement.getContext('2d');
+  }
+
+  async onPlusClick() {
+    this.clickCounter++;
+    const modal = await this.modalController.create({
+      component: AddMetricPage,
+      componentProps: {
+
+      }
+    });
+    
+    modal.onWillDismiss().then(dataReturned => {
+      var name = dataReturned.data;
+      console.log("received" + name);
+    });
+
+    return await modal.present().then(_ => {
+      console.log("sending" + this.clickCounter);
+    });
   }
 
   animate(): void {
@@ -83,11 +103,6 @@ export class ExploreContainerComponent implements OnInit {
       this.icons.push({x:this.saveX,y:this.saveY,text:'rgb(' + Math.random()*99 + ',' + Math.random()*99+','+Math.random()*99+')'});
     }
     this.animate();
-  }
-
-  onStartClick() {
-    console.log('add');
-    this.clickCounter++;
   }
 
   onChartClick() {

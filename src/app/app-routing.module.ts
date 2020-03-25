@@ -5,7 +5,15 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },  {
+    path: 'add-metric',
+    loadChildren: () => import('./modals/add-metric/add-metric.module').then( m => m.AddMetricPageModule)
+  },
+  {
+    path: 'add-metric',
+    loadChildren: () => import('./modals/add-metric/add-metric.module').then( m => m.AddMetricPageModule)
   }
+
 ];
 @NgModule({
   imports: [

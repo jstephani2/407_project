@@ -51,6 +51,8 @@ export class ExploreContainerComponent implements OnInit {
     modal.onWillDismiss().then(dataReturned => {
       var name = dataReturned.data;
       console.log("received" + name);
+      this.icons.push({x:0,y:0,text:'rgb(' + Number.parseInt(name) + ',' + 0 +','+ 0 +')'});
+      this.animate();
     });
 
     return await modal.present().then(_ => {

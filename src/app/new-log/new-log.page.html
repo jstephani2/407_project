@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Track Data</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col></ion-col>
+            <ion-col>
+                <ion-item>
+                    <ion-label>
+                        {{ tracker.name }}
+                    </ion-label>
+                    <ion-button slot='end'>
+                        Edit
+                    </ion-button>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-label>
+                How do you feel?
+            </ion-label>
+        </ion-row>
+        <ion-row>
+            <ion-button>
+                Positive
+            </ion-button>
+            <ion-button>
+                Neutral
+            </ion-button>
+            <ion-button>
+                Negative
+            </ion-button>
+        </ion-row>
+        <ion-row *ngFor="let measure of tracker.measures">
+            \
+            <ion-row>
+                <ion-labe>{{ measure.question }}</ion-labe>
+            </ion-row>
+            <ion-row>
+                <ion-input [(ngModel)]="measure."></ion-input>
+            </ion-row>
+        </ion-row>
+    </ion-grid>
+</ion-content>

@@ -10,7 +10,7 @@
         </ion-fab-button>
     </ion-fab>
     <ion-list>
-        <ion-item *ngFor="let tracker of trackers">
+        <ion-item *ngFor="let tracker of trackers" (click)="openLogPage({{ tracker }})">
             <ion-label>{{ tracker.name }}</ion-label>
         </ion-item>
     </ion-list>

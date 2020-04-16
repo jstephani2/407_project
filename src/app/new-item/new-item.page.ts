@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackerManager } from '../../providers/tracker-manager';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-new-item',
@@ -18,7 +19,8 @@ export class NewItemPage implements OnInit {
 
     constructor(
         //protected storage: Storage,
-        protected trackerManager: TrackerManager
+        protected trackerManager: TrackerManager,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -41,7 +43,9 @@ export class NewItemPage implements OnInit {
             goal: this.goal,
             icon: this.icon
         }
-        this.trackerManager.saveTrackerToLocalStorage(tracker);
+        this.trackerManager.saveTrackerToLocalStorage(tracker).then(() => {
+            this.router.navigate(['']);
+        });
     }
 
 }

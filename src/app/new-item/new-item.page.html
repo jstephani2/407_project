@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>New Tracker</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-label>What would you like to track?</ion-label>
+        </ion-row>
+        <ion-row>
+            <ion-input [(ngModel)]="trackerName"></ion-input>
+        </ion-row>
+        <ion-row>
+            <ion-label>Why?</ion-label>
+        </ion-row>
+        <ion-row>
+            <ion-input [(ngModel)]="trackerWhy"></ion-input>
+        </ion-row>
+        <ion-row>
+            <ion-label>How would you like to track it?</ion-label>
+        </ion-row>
+        <ion-row>
+            <ion-list></ion-list>
+            <ion-button (click)="addQuantitativeMeasure()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add a quantitative measure
+            </ion-button>
+            <ion-button (click)="addQualitativeMeasure()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add a qualitative measure
+            </ion-button>
+        </ion-row>
+        <ion-row>
+            <ion-label>Choose an Icon</ion-label>
+        </ion-row>
+        <ion-row>
+            <ion-button>
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+        </ion-row>
+    </ion-grid>
+    <ion-button (click)="saveTracker()">Save</ion-button>
+</ion-content>

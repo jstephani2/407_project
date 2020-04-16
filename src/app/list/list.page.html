@@ -4,7 +4,7 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button [routerLink]="['/newItem']">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
@@ -13,5 +13,6 @@
         <ion-item *ngFor="let tracker of trackers" (click)="openLogPage({{ tracker }})">
             <ion-label>{{ tracker.name }}</ion-label>
         </ion-item>
-    </ion-list>
+    </ion-list> -->
+  <app-explore-container name="Main"></app-explore-container>
 </ion-content>

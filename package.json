@@ -29,6 +29,7 @@
     "cordova-plugin-ionic-webview": "^2.0.0-beta.1",
     "cordova-sqlite-storage": "^5.0.0",
     "core-js": "^2.5.4",
+    "ng": "0.0.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.11.1",
     "zone.js": "~0.9.1"

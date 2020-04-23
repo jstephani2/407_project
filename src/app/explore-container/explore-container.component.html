@@ -1,6 +1,6 @@
 
 <ion-content scrollX='true' scrollY='true'>
-  <canvas #imageCanvas (click)="startDrawing($event)"></canvas>
+  <canvas #imageCanvas (click)="detect($event)"></canvas>
 
   <ion-fab vertical="start" horizontal="end" slot="fixed" class="buttonNav">
     <ion-fab-button size="large" (click)="onPlusClick()">
@@ -8,7 +8,7 @@
     </ion-fab-button>
   </ion-fab>
   <ion-fab vertical="start" horizontal="start" slot="fixed" class="buttonNav">
-    <ion-fab-button size="large" (click)="onChartClick()">
+    <ion-fab-button size="large" (click)="onChartClick()" >
       <ion-icon name="bar-chart-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>

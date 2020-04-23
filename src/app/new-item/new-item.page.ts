@@ -46,6 +46,7 @@ export class NewItemPage implements OnInit {
         this.trackerManager.saveTrackerToLocalStorage(tracker).then(() => {
             this.router.navigate(['']);
         });
+        
     }
 
 }

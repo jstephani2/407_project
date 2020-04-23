@@ -20,6 +20,7 @@ import { TrackerManager } from 'src/providers/tracker-manager';
   providers: [
       Storage,
       TrackerManager
-  ]
+  ],
+  exports: [NewItemPage]
 })
 export class NewItemPageModule {}

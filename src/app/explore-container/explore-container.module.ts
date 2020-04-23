@@ -5,12 +5,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ExploreContainerComponent } from './explore-container.component';
-import { AddMetricPage } from '../modals/add-metric/add-metric.page'
 
 @NgModule({
   imports: [ CommonModule, FormsModule, ReactiveFormsModule, IonicModule],
-  declarations: [ExploreContainerComponent, AddMetricPage],
-  entryComponents: [AddMetricPage],
+  declarations: [ExploreContainerComponent],
+  entryComponents: [],
   exports: [ExploreContainerComponent]
 })
 export class ExploreContainerComponentModule {}

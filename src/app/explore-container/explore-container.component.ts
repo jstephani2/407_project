@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { Platform, IonContent, ModalController } from '@ionic/angular';
-import { AddMetricPage } from '../modals/add-metric/add-metric.page'
+import { Router } from '@angular/router';
+import { TrackerManager } from 'src/providers/tracker-manager';
 
 @Component({
   selector: 'app-explore-container',
@@ -18,10 +19,11 @@ export class ExploreContainerComponent implements OnInit {
   saveX: number;
   saveY: number;
   icons: Array<{x: number, y: number, title: string, why:string, color:string}> = [];
+  lastBubble: string;
 
   clickCounter : number = 0;
 
-  constructor(private plt: Platform, private modalController: ModalController) { }
+  constructor(private plt: Platform, private trackerManager: TrackerManager, private router: Router) { }
 
   ngOnInit() {}
 
@@ -39,28 +41,33 @@ export class ExploreContainerComponent implements OnInit {
     this.ctx = this.canvasElement.getContext('2d');
   }
 
-  async onPlusClick() {
+  onPlusClick() {
     this.clickCounter++;
-    const modal = await this.modalController.create({
-      component: AddMetricPage,
-      componentProps: {
+    this.router.navigateByUrl("/new-item");
+  }
 
-      }
-    });
-    
-    modal.onWillDismiss().then(dataReturned => {
-      var name = dataReturned.data;
-      console.log("received" + name);
-      this.icons.push({x:this.saveX,y:this.saveY,title:name,why:'',color:'rgb(' + Math.random()*99 + ',' + Math.random()*99+','+Math.random()*99+')'});
-      this.animate();
-    });
+  
+  // var tracker = {
+  //   name: this.trackerName,
+  //   reason: this.trackerWhy,
+  //   qualMeasures: this.qualitativeMeasures,
+  //   quantMeasures: this.quantitativeMeasures,
+  //   goal: this.goal,
+  //   icon: this.icon
+  // }
 
-    return await modal.present().then(_ => {
-      console.log("sending" + this.clickCounter);
-    });
+  addedMetric() {
+    let t = this.trackerManager.getTrackersFromLocalStorage();
+    if (t!=null && t[-1] !== this.lastBubble) {
+      t = t[-1];
+      console.log(t[0]);
+      this.lastBubble = t[0];
+      this.icons.push({x: 0,y: 0,title: t[0],why: t[1],color:"#0fff00"});
+    }
   }
 
   animate(): void {
+    this.addedMetric();
     this.ctx.clearRect(this.originX, this.originY, this.canvasElement.width,this.canvasElement.height);
     for (let i = 0; i < this.icons.length; i++) {
       if (i == 0) {
@@ -91,7 +98,7 @@ export class ExploreContainerComponent implements OnInit {
     requestAnimationFrame(this.animate.bind(this));
   }
  
-  startDrawing(event) {
+  detect(event) {
     var canvasPosition = this.canvasElement.getBoundingClientRect();
  
     this.saveX = event.pageX - canvasPosition.x;
@@ -100,11 +107,16 @@ export class ExploreContainerComponent implements OnInit {
     for (let i = 0; i < this.icons.length; i++) {
       if (Math.sqrt(Math.pow(this.icons[i].x-this.saveX,2)+Math.pow(this.icons[i].y-this.saveY,2)) < 50) {
         console.log(this.icons[i].title);
+        this.onMetricClick();
         buttonHit = true;
         break;
       }
     }
     this.animate();
+  }
+
+  onMetricClick() {
+    this.router.navigateByUrl("/new-log");
   }
 
   onChartClick() {

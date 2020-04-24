@@ -40,7 +40,7 @@ export class ExploreContainerComponent implements OnInit {
     this.centerX = this.originX + this.canvasElement.width/2;
     this.centerY = this.originY + this.canvasElement.height/2;
     this.ctx = this.canvasElement.getContext('2d');
-    this.icons.push({x:0,y:0,title:"test",why:"because",color:"#ff0000"});
+    this.icons.push({x:0,y:0,title:"test",why:"because",color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
     this.draw();
   }
 
@@ -63,7 +63,7 @@ export class ExploreContainerComponent implements OnInit {
     let t = this.trackerManager.getTrackersFromLocalStorage();
     if (t!=null) {
       // for (let i = 0; i < t.size; i++) {
-      //   this.icons.push({x:0,y:0,title:t[i][0],why:t[i][1],color:"#0ff0ff"});
+      //   this.icons.push({x:0,y:0,title:t[i][0],why:t[i][1],color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
       // }
     }
     this.draw();

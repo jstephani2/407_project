@@ -19,6 +19,7 @@ export class ExploreContainerComponent implements OnInit {
   saveX: number;
   saveY: number;
   icons: Array<{x: number, y: number, title: string, why:string, color:string}> = [];
+  iconsAlternate: any;
   lastBubble: string;
 
   clickCounter : number = 0;
@@ -39,6 +40,8 @@ export class ExploreContainerComponent implements OnInit {
     this.centerX = this.originX + this.canvasElement.width/2;
     this.centerY = this.originY + this.canvasElement.height/2;
     this.ctx = this.canvasElement.getContext('2d');
+    this.icons.push({x:0,y:0,title:"test",why:"because",color:"#ff0000"});
+    this.draw();
   }
 
   onPlusClick() {
@@ -58,16 +61,16 @@ export class ExploreContainerComponent implements OnInit {
 
   addedMetric() {
     let t = this.trackerManager.getTrackersFromLocalStorage();
-    if (t!=null && t[-1] !== this.lastBubble) {
-      t = t[-1];
-      console.log(t[0]);
-      this.lastBubble = t[0];
-      this.icons.push({x: 0,y: 0,title: t[0],why: t[1],color:"#0fff00"});
+    if (t!=null) {
+      // for (let i = 0; i < t.size; i++) {
+      //   this.icons.push({x:0,y:0,title:t[i][0],why:t[i][1],color:"#0ff0ff"});
+      // }
     }
+    this.draw();
   }
 
-  animate(): void {
-    this.addedMetric();
+  draw(): void {
+    //this.addedMetric();
     this.ctx.clearRect(this.originX, this.originY, this.canvasElement.width,this.canvasElement.height);
     for (let i = 0; i < this.icons.length; i++) {
       if (i == 0) {
@@ -95,7 +98,7 @@ export class ExploreContainerComponent implements OnInit {
         i=0;
       }
     }
-    requestAnimationFrame(this.animate.bind(this));
+    //requestAnimationFrame(this.draw.bind(this));
   }
  
   detect(event) {
@@ -112,7 +115,7 @@ export class ExploreContainerComponent implements OnInit {
         break;
       }
     }
-    this.animate();
+    this.addedMetric();
   }
 
   onMetricClick() {
@@ -120,7 +123,7 @@ export class ExploreContainerComponent implements OnInit {
   }
 
   onChartClick() {
-    console.log('chart');
+    this.router.navigateByUrl("/datagraphics");
   }
 
 }

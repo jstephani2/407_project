@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: () => import('../new-item/new-item.module').then( m => m.NewItemPageModule)
     },
     {
+        path: 'datagraphics',
+        loadChildren: () => import('../datagraphics/datagraphics.module').then( m => m.DatagraphicsPageModule)
+    },
+    {
         path: '',
         redirectTo: 'list',
         pathMatch: 'full'

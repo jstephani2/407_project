@@ -49,4 +49,8 @@ export class NewItemPage implements OnInit {
         
     }
 
+    return() {
+      this.router.navigateByUrl("");
+    }
+
 }

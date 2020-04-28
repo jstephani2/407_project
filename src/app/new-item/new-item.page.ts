@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackerManager } from '../../providers/tracker-manager';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
     selector: 'app-new-item',
@@ -35,7 +35,7 @@ export class NewItemPage implements OnInit {
     }
 
     saveTracker(): void {
-        var tracker = {
+        let tracker = {
             name: this.trackerName,
             reason: this.trackerWhy,
             qualMeasures: this.qualitativeMeasures,
@@ -43,8 +43,13 @@ export class NewItemPage implements OnInit {
             goal: this.goal,
             icon: this.icon
         }
+        let navigationsExtras : NavigationExtras = {
+            state: {
+                tracker: tracker
+            }
+        }
         this.trackerManager.saveTrackerToLocalStorage(tracker).then(() => {
-            this.router.navigate(['']);
+            this.router.navigate([''], navigationsExtras);
         });
         
     }

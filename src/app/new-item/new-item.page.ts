@@ -49,7 +49,7 @@ export class NewItemPage implements OnInit {
         
     }
 
-    return() {
+    back() {
       this.router.navigateByUrl("");
     }
 

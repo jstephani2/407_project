@@ -69,7 +69,7 @@ export class ExploreContainerComponent implements OnInit {
     this.draw();
   }
 
-  draw(): void {
+  draw() {
     //this.addedMetric();
     this.ctx.clearRect(this.originX, this.originY, this.canvasElement.width,this.canvasElement.height);
     for (let i = 0; i < this.icons.length; i++) {
@@ -102,7 +102,7 @@ export class ExploreContainerComponent implements OnInit {
   }
  
   detect(event) {
-    var canvasPosition = this.canvasElement.getBoundingClientRect();
+    let canvasPosition = this.canvasElement.getBoundingClientRect();
  
     this.saveX = event.pageX - canvasPosition.x;
     this.saveY = event.pageY - canvasPosition.y;

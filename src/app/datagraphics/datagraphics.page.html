@@ -1,12 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start" (click)="return()">
+    <ion-buttons slot="start" (click)="back()">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>datagraphics</ion-title>
+    <ion-title>Data Graphics</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <canvas #imageCanvas (click)="detect($event)" (drag)="scroll($event)"></canvas>
+  <ion-row>
+    <p></p>
+  </ion-row>
+  <canvas #imageCanvas (click)="detect($event)" (touchstart)="startTouch($event)" (touchmove)="scroll($event)" (touchend)="endTouch($event)"></canvas>
 </ion-content>

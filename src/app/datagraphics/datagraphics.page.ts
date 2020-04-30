@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
+import { NumberFormatStyle } from '@angular/common';
 
 @Component({
   selector: 'app-datagraphics',
@@ -25,6 +26,7 @@ export class DatagraphicsPage implements OnInit {
   lastX: number;
   lastY: number;
   lastTouch: number;
+  year: number;
   data: Array<{date: {d:number,m:number,y:number}, metric: number,x:number,y:number}> = [];
   months: Array<number> = [0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -185,6 +187,7 @@ export class DatagraphicsPage implements OnInit {
       }
       this.lastDate = {d: databit.date.d, m: databit.date.m, y: databit.date.y};
     });
+    this.year = this.lastDate.y;
     this.months[0] = this.centerX-((this.lastDate.m-1)*60.8+this.lastDate.d)*this.spacing;
     for(let i = 1; i < 12; i++) {
       this.months[i] = this.months[i-1]+30.4*this.spacing;    
@@ -233,12 +236,18 @@ export class DatagraphicsPage implements OnInit {
     for(let i = 0; i < 12; i++) {
       if (this.months[i] < this.llimit){
         this.months[i] = this.centerX + 182.4*this.spacing-((this.llimit)-this.months[i]);
+        if(i===0) {
+          this.year++;
+        }
       } else if (this.months[i] > this.rlimit) {
         this.months[i] = this.centerX - 182.4*this.spacing+(this.months[i]-(this.rlimit));
+        if(i===0) {
+          this.year--;
+        }
       }
       this.ctx.fillText(this.getMonthTitle(i+1,false),this.months[i],this.bottomY+10);
       if (i===0) {
-        this.ctx.fillText("2020",this.months[i],this.bottomY);
+        this.ctx.fillText(this.year.toString(),this.months[i],this.bottomY);
       }
     }
   }
@@ -258,6 +267,7 @@ export class DatagraphicsPage implements OnInit {
   }
 
   endTouch(event) {
+    
   }
 
   detect(event) {

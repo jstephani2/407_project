@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackerManager } from '../../providers/tracker-manager';
 import { Router } from '@angular/router';
+import { Measure } from 'src/providers/measure';
+import { Tracker } from 'src/providers/tracker';
 
 @Component({
     selector: 'app-new-item',
@@ -10,10 +12,12 @@ import { Router } from '@angular/router';
 export class NewItemPage implements OnInit {
     protected trackerName: string;
     protected trackerWhy: string;
-    protected quantitativeMeasures: object[];
-    protected qualitativeMeasures: object[];
+    protected quantitativeMeasures: Measure[] = [];
+    protected qualitativeMeasures: Measure[] = [];
+    protected measures: Measure[] = [];
     protected goal: object;
     protected icon: string;
+    protected category: string;
 
     //protected trackerManager: TrackerManager = new TrackerManager(this.storage);
 
@@ -27,23 +31,25 @@ export class NewItemPage implements OnInit {
     }
 
     addQuantitativeMeasure(): void {
-
+        var measure = new Measure();
+        this.quantitativeMeasures.push(measure);
     }
 
     addQualitativeMeasure(): void {
-
+        var measure = new Measure();
+        this.qualitativeMeasures.push(measure);
     }
 
     saveTracker(): void {
-        var tracker = {
-            name: this.trackerName,
-            reason: this.trackerWhy,
-            qualMeasures: this.qualitativeMeasures,
-            quantMeasures: this.quantitativeMeasures,
-            goal: this.goal,
-            icon: this.icon
-        }
+        var tracker = new Tracker();
+        tracker.addMeasures(this.quantitativeMeasures);
+        tracker.addMeasures(this.qualitativeMeasures);
+        tracker.name = this.trackerName;
+        tracker.reason = this.trackerWhy;
+        tracker.icon = this.icon;
+        tracker.category = this.category;
         this.trackerManager.saveTrackerToLocalStorage(tracker).then(() => {
+            console.log("success");
             this.router.navigate(['']);
         });
         

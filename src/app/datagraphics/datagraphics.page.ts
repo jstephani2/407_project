@@ -19,10 +19,14 @@ export class DatagraphicsPage implements OnInit {
   maxMetric: number = 0;
   lastDate: {d:number,m:number,y:number};
   offset: number;
+  llimit: number;
+  rlimit: number;
+  spacing: number = 5;
   lastX: number;
   lastY: number;
   lastTouch: number;
   data: Array<{date: {d:number,m:number,y:number}, metric: number,x:number,y:number}> = [];
+  months: Array<number> = [0,0,0,0,0,0,0,0,0,0,0,0];
 
   constructor(private plt: Platform, private router: Router) { }
 
@@ -40,6 +44,8 @@ export class DatagraphicsPage implements OnInit {
     this.canvasElement.height = this.plt.height()*.5 + '';
     this.centerX = this.originX + this.canvasElement.width/2;
     this.centerY = this.originY + this.canvasElement.height/2;
+    this.llimit = this.centerX-182.4*this.spacing;
+    this.rlimit = this.centerX+182.2*this.spacing;
     this.bottomY = this.originY+this.canvasElement.height-20;
     this.ctx = this.canvasElement.getContext('2d');
     for (let i = 0; i < 20; i++) {
@@ -107,6 +113,65 @@ export class DatagraphicsPage implements OnInit {
     }
   }
 
+  getDaysFromMonth(month: number, leap: boolean) {
+    if (leap && month == 3) {return 29;}
+    switch(month) {
+      case 1:
+        return 31;
+      case 2:
+        return 28;
+      case 3:
+        return 31;
+      case 4:
+        return 30;
+      case 5:
+        return 31;
+      case 6:
+        return 30;
+      case 7:
+        return 31;
+      case 8:
+        return 31;
+      case 9:
+        return 30;
+      case 10:
+        return 31;
+      case 11:
+        return 30;
+      case 12:
+        return 31;
+    }
+  }
+
+  getMonthTitle(month: number, leap: boolean) {
+    switch(month) {
+      case 1:
+        return "January";
+      case 2:
+        return "February";
+      case 3:
+        return "March";
+      case 4:
+        return "April";
+      case 5:
+        return "May";
+      case 6:
+        return "June";
+      case 7:
+        return "July";
+      case 8:
+        return "August";
+      case 9:
+        return "September";
+      case 10:
+        return "October";
+      case 11:
+        return "November";
+      case 12:
+        return "December";
+    }
+  }
+
   getDays(d: number,m: number, y: number) {
     return d+this.getDaysFromMonths(m,y%4===0)+(y%4)*365+(y-y%4)*365.25;
   }
@@ -120,6 +185,10 @@ export class DatagraphicsPage implements OnInit {
       }
       this.lastDate = {d: databit.date.d, m: databit.date.m, y: databit.date.y};
     });
+    this.months[0] = this.centerX-((this.lastDate.m-1)*60.8+this.lastDate.d)*this.spacing;
+    for(let i = 1; i < 12; i++) {
+      this.months[i] = this.months[i-1]+30.4*this.spacing;    
+    }
     this.offset = this.getDays(this.lastDate.d,this.lastDate.m,this.lastDate.y);
     this.data.forEach((databit)=>{
       databit.x = this.getDays(databit.date.d,databit.date.m,databit.date.y);
@@ -127,31 +196,51 @@ export class DatagraphicsPage implements OnInit {
     })
   }
 
+  // 30.4 <= average month
+
   draw() {
     this.ctx.clearRect(this.originX,this.originY-10,this.canvasElement.width,this.canvasElement.height);
     if (this.data==null) {return;}
     this.ctx.fillStyle="red";
     this.data.forEach((databit)=>{
-      let x = databit.x-this.offset+this.centerX;
+      let x = (databit.x-this.offset)*this.spacing+this.centerX;
       let y = databit.y;
-      this.ctx.fillRect(x-5,y-5,10,10);
+      this.ctx.beginPath();
+      this.ctx.arc(x,y,5,0,Math.PI*2,false);
+      this.ctx.fill();
+      this.ctx.closePath();
+      //this.ctx.fillRect(x-5,y-5,10,10);
       if (this.lastX != null) {
-        this.ctx.strokeStyle = "yellow";
+        this.ctx.strokeStyle = "red";
         this.ctx.beginPath();
         this.ctx.moveTo(x,y);
         this.ctx.lineTo(this.lastX,this.lastY);
         this.ctx.stroke();
+        this.ctx.closePath();
       }
       this.lastX = x;
       this.lastY = y;
     });
     this.lastX = null;
     this.lastY = null;
-    this.ctx.fillStyle = "white";
+    this.ctx.fillStyle = "red";
     this.ctx.textAlign = "left";
     this.ctx.fillText(Math.floor(this.maxMetric).toString(),10,this.originY);
     this.ctx.fillText(Math.floor(this.maxMetric/2).toString(),10,this.centerY);
     this.ctx.fillText("0",10,this.bottomY);
+    this.ctx.textAlign = "center";
+
+    for(let i = 0; i < 12; i++) {
+      if (this.months[i] < this.llimit){
+        this.months[i] = this.centerX + 182.4*this.spacing-((this.llimit)-this.months[i]);
+      } else if (this.months[i] > this.rlimit) {
+        this.months[i] = this.centerX - 182.4*this.spacing+(this.months[i]-(this.rlimit));
+      }
+      this.ctx.fillText(this.getMonthTitle(i+1,false),this.months[i],this.bottomY+10);
+      if (i===0) {
+        this.ctx.fillText("2020",this.months[i],this.bottomY);
+      }
+    }
   }
 
   startTouch(event) {
@@ -159,7 +248,11 @@ export class DatagraphicsPage implements OnInit {
   }
 
   scroll(event) {
-    this.offset += this.lastTouch-event.touches[0].pageX;
+    this.months[0]-=this.lastTouch-event.touches[0].pageX;
+    for(let i = 1; i < 12; i++) {
+      this.months[i] = this.months[i-1]+30.4*this.spacing;    
+    }
+    this.offset += (this.lastTouch-event.touches[0].pageX)/this.spacing;
     this.lastTouch = event.touches[0].pageX;
     this.draw();
   }

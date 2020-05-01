@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { NewLogPageRoutingModule } from './new-log-routing.module';
 
 import { NewLogPage } from './new-log.page';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NewLogPageRoutingModule
+    NewLogPageRoutingModule,
+    FontAwesomeModule
   ],
   declarations: [NewLogPage]
 })

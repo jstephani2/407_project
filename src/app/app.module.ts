@@ -9,13 +9,17 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
     imports: [BrowserModule, IonicModule.forRoot(),
         AppRoutingModule,
-        IonicStorageModule.forRoot()],
+        IonicStorageModule.forRoot(),
+        FontAwesomeModule
+    ],
     providers: [
         StatusBar,
         SplashScreen,
@@ -23,4 +27,8 @@ import { AppComponent } from './app.component';
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(library: FaIconLibrary) {
+        library.addIconPacks(fas);
+    }
+}

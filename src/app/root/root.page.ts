@@ -11,8 +11,6 @@ export class RootPage {
     constructor(
         protected trackerManager: TrackerManager
     ) {
-        trackerManager.getTrackersFromLocalStorage().then((trackers) => {
-            //this.trackers = trackers;
-        });
+        
     }
 }

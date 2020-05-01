@@ -7,20 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { NewItemPageRoutingModule } from './new-item-routing.module';
 
 import { NewItemPage } from './new-item.page';
-import { TrackerManager } from 'src/providers/tracker-manager';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NewItemPageRoutingModule
+    NewItemPageRoutingModule,
+    FontAwesomeModule
   ],
   declarations: [NewItemPage],
-  providers: [
-      Storage,
-      TrackerManager
-  ],
   exports: [NewItemPage]
 })
 export class NewItemPageModule {}

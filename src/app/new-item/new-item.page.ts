@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackerManager } from '../../providers/tracker-manager';
 import { Router, NavigationExtras } from '@angular/router';
 import { Measure } from 'src/providers/measure';
 import { Tracker } from 'src/providers/tracker';
@@ -16,30 +15,31 @@ export class NewItemPage implements OnInit {
     protected qualitativeMeasures: Measure[] = [];
     protected measures: Measure[] = [];
     protected goal: object;
-    protected icon: string;
+    protected icon: string = "";
     protected category: string;
 
-    //protected trackerManager: TrackerManager = new TrackerManager(this.storage);
-
     constructor(
-        //protected storage: Storage,
-        protected trackerManager: TrackerManager,
         private router: Router
-    ) { }
+    ) {  }
 
     ngOnInit() {
     }
 
+    // Add quantitative measure to tracker
     addQuantitativeMeasure(): void {
         var measure = new Measure();
+        measure.type = "quantitative";
         this.quantitativeMeasures.push(measure);
     }
 
+    // Add Qualitative measure to tracker
     addQualitativeMeasure(): void {
         var measure = new Measure();
+        measure.type = "qualitative";
         this.qualitativeMeasures.push(measure);
     }
 
+    // Save tracker and return to home page
     saveTracker(): void {
         var tracker = new Tracker();
         tracker.addMeasures(this.quantitativeMeasures);
@@ -48,15 +48,14 @@ export class NewItemPage implements OnInit {
         tracker.reason = this.trackerWhy;
         tracker.icon = this.icon;
         tracker.category = this.category;
-        let navigationsExtras : NavigationExtras = {
+
+        let navigationExtras : NavigationExtras = {
             state: {
-                tracker: tracker
+                tracker: tracker,
+                task: "create"
             }
-        }
-        this.trackerManager.saveTrackerToLocalStorage(tracker).then(() => {
-            this.router.navigate([''], navigationsExtras);
-        });
-        
+          }
+          this.router.navigateByUrl("", navigationExtras);
     }
 
     back() {

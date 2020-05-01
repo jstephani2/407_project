@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { Platform, IonContent, ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { TrackerManager } from 'src/providers/tracker-manager';
 
 @Component({
@@ -19,6 +19,7 @@ export class ExploreContainerComponent implements OnInit {
   saveX: number;
   saveY: number;
   icons: Array<{x: number, y: number, title: string, why:string, color:string}> = [];
+  trackers: any;
   iconsAlternate: any;
   lastBubble: string;
 
@@ -40,8 +41,15 @@ export class ExploreContainerComponent implements OnInit {
     this.centerX = this.originX + this.canvasElement.width/2;
     this.centerY = this.originY + this.canvasElement.height/2;
     this.ctx = this.canvasElement.getContext('2d');
-    this.icons.push({x:0,y:0,title:"test",why:"because",color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
-    this.draw();
+    // this.trackerManager.getTrackersFromLocalStorage().then((trackers) => {
+    //   this.trackers = trackers;
+    //   console.log(trackers);
+    //   console.log("here2");
+    //   for (var ind in trackers) {
+    //     this.icons.push({x:0, y:0, title: trackers[ind].name, why: trackers[ind].reason, color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
+    //   }
+    //   this.draw();
+    // });
   }
 
   onPlusClick() {
@@ -60,13 +68,13 @@ export class ExploreContainerComponent implements OnInit {
   // }
 
   addedMetric() {
-    let t = this.trackerManager.getTrackersFromLocalStorage();
-    if (t!=null) {
-      // for (let i = 0; i < t.size; i++) {
-      //   this.icons.push({x:0,y:0,title:t[i][0],why:t[i][1],color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
-      // }
-    }
-    this.draw();
+    // let t = this.trackerManager.getTrackersFromLocalStorage();
+    // if (t!=null) {
+    //   // for (let i = 0; i < t.size; i++) {
+    //   //   this.icons.push({x:0,y:0,title:t[i][0],why:t[i][1],color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
+    //   // }
+    // }
+    // this.draw();
   }
 
   draw() {
@@ -109,8 +117,7 @@ export class ExploreContainerComponent implements OnInit {
     let buttonHit = false;
     for (let i = 0; i < this.icons.length; i++) {
       if (Math.sqrt(Math.pow(this.icons[i].x-this.saveX,2)+Math.pow(this.icons[i].y-this.saveY,2)) < 50) {
-        console.log(this.icons[i].title);
-        this.onMetricClick();
+        this.onMetricClick(i);
         buttonHit = true;
         break;
       }
@@ -118,8 +125,13 @@ export class ExploreContainerComponent implements OnInit {
     this.addedMetric();
   }
 
-  onMetricClick() {
-    this.router.navigateByUrl("/new-log");
+  onMetricClick(index: number) {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        tracker: this.trackers[index]
+      }
+    }
+    this.router.navigateByUrl("/new-log", navigationExtras);
   }
 
   onChartClick() {

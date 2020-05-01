@@ -1,48 +1,87 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start" (click)="back()">
-          <ion-back-button></ion-back-button>
+            <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>New Tracker</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
     <ion-grid>
         <ion-row>
             <ion-label>What would you like to track?</ion-label>
         </ion-row>
         <ion-row>
-            <ion-input [(ngModel)]="trackerName"></ion-input>
+            <ion-item>
+                <ion-input [(ngModel)]="trackerName"></ion-input>
+            </ion-item>
         </ion-row>
         <ion-row>
             <ion-label>Why?</ion-label>
         </ion-row>
         <ion-row>
-            <ion-input [(ngModel)]="trackerWhy"></ion-input>
+            <ion-item>
+                <ion-input [(ngModel)]="trackerWhy"></ion-input>
+            </ion-item>
         </ion-row>
         <ion-row>
             <ion-label>How would you like to track it?</ion-label>
         </ion-row>
         <ion-row>
-            <ion-list></ion-list>
             <ion-button (click)="addQuantitativeMeasure()">
                 <ion-icon slot="start" name="add"></ion-icon>
                 Add a quantitative measure
             </ion-button>
+            <ion-list>
+                <ion-item *ngFor="let measure of quantitativeMeasures">
+                    <ion-row>
+                        <ion-label>Measure:</ion-label>
+                    </ion-row>
+                    <ion-row>
+                        <ion-input [(ngModel)]="measure.title"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Units:</ion-label>
+                    </ion-row>
+                    <ion-row>
+                        <ion-input [(ngModel)]="measure.units"></ion-input>
+                    </ion-row>
+                </ion-item>
+            </ion-list>
             <ion-button (click)="addQualitativeMeasure()">
                 <ion-icon slot="start" name="add"></ion-icon>
                 Add a qualitative measure
             </ion-button>
+            <ion-list>
+                <ion-item *ngFor="let measure of qualitativeMeasures">
+                    <ion-row>
+                        <ion-label>Measure:</ion-label>
+                    </ion-row>
+                    <ion-row>
+                        <ion-input [(ngModel)]="measure.title"></ion-input>
+                    </ion-row>
+                </ion-item>
+            </ion-list>
         </ion-row>
         <ion-row>
-            <ion-label>Choose an Icon</ion-label>
+            <ion-label><b>Icon</b></ion-label>
         </ion-row>
         <ion-row>
-            <ion-button>
-                <ion-icon slot="icon-only" name="add"></ion-icon>
-            </ion-button>
+            <ion-select placeholder="Select Icon" [(ngModel)]="icon">
+                <ion-select-option value="book">Book</ion-select-option>
+                <ion-select-option value="music">Music</ion-select-option>
+                <ion-select-option value="running">Running</ion-select-option>
+                <ion-select-option value="basketball-ball">Basketball</ion-select-option>
+                <ion-select-option value="calendar">Calendar</ion-select-option>
+                <ion-select-option value="car">Car</ion-select-option>
+                <ion-select-option value="chart-line">Chart</ion-select-option>
+                <ion-select-option value="dollar-sign">Dollar Sign</ion-select-option>
+            </ion-select>
         </ion-row>
+        <ion-text *ngIf="icon != ''">
+            <h1><fa-icon [icon]="icon"></fa-icon></h1>
+        </ion-text>
     </ion-grid>
     <ion-button (click)="saveTracker()">Save</ion-button>
 </ion-content>

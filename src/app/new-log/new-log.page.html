@@ -6,43 +6,48 @@
 
 <ion-content>
     <ion-grid>
-        <ion-row>
-            <ion-col></ion-col>
+        <ion-row class="ion-align-items-end ion-padding">
+            <ion-col size="4" *ngIf="tracker.icon != ''">
+                <h1 style="font-size: 3rem; text-align: center;"><fa-icon [icon]="tracker.icon"></fa-icon></h1>
+            </ion-col>
             <ion-col>
-                <ion-item>
+                <ion-item >
                     <ion-label>
-                        {{ tracker.name }}
+                        <h1 style="font-size: 1.7rem;">{{ tracker.name }}</h1>
                     </ion-label>
-                    <ion-button slot='end'>
-                        Edit
+                    <ion-button slot='end' color="danger" (click)="deleteTracker()">
+                        Delete
                     </ion-button>
                 </ion-item>
             </ion-col>
         </ion-row>
-        <ion-row>
-            <ion-label>
-                How do you feel?
-            </ion-label>
-        </ion-row>
-        <ion-row>
-            <ion-button>
-                Positive
-            </ion-button>
-            <ion-button>
-                Neutral
-            </ion-button>
-            <ion-button>
-                Negative
-            </ion-button>
-        </ion-row>
-        <ion-row *ngFor="let measure of tracker.measures">
-            \
-            <ion-row>
-                <ion-label>{{ measure.question }}</ion-label>
+        <ion-row class="ion-padding" *ngFor="let measure of tracker.measures">
+            <ion-row *ngIf="measure.type == 'qualitative'">
+                <ion-item>
+                    <ion-label class="ion-padding-end"><b>{{ measure.title }}</b></ion-label>
+                    <ion-button (click)="handleOptionClick(measure, 'positive')">
+                        Positive
+                    </ion-button>
+                    <ion-button (click)="handleOptionClick(measure, 'neutral')">
+                        Neutral
+                    </ion-button>
+                    <ion-button (click)="handleOptionClick(measure, 'negative')">
+                        Negative
+                    </ion-button>
+                </ion-item>
+                <!-- <ion-button *ngFor="let option of measure.options" (click)="handleOptionClick(measure, option)">
+                    {{ option }}
+                </ion-button> -->
+                <!-- <ion-input [(ngModel)]="measure."></ion-input> -->
             </ion-row>
-            <ion-row>
-                <ion-input [(ngModel)]="measure."></ion-input>
+            <ion-row *ngIf="measure.type == 'quantitative'">
+                <ion-item>
+                    <ion-label><b>{{ measure.title }}</b></ion-label>
+                    <ion-input [(ngModel)]="measure.curr_entry"></ion-input>
+                    <ion-label>{{ measure.units }}</ion-label>
+                </ion-item>
             </ion-row>
         </ion-row>
+        <ion-button class="ion-padding" (click)="handleSaveClick()">Save</ion-button>
     </ion-grid>
 </ion-content>

@@ -7,18 +7,18 @@ import { ListPageRoutingModule } from './list-routing.module';
 
 import { ListPage } from './list.page';
 import { TrackerManager } from 'src/providers/tracker-manager';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
         IonicModule,
         CommonModule,
         FormsModule,
-        ListPageRoutingModule
+        ListPageRoutingModule,
+        FontAwesomeModule
     ],
-    declarations: [ListPage,
-        ExploreContainerComponent
-    ],
+    declarations: [ListPage],
     entryComponents: [],
     providers: [
         TrackerManager

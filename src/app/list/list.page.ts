@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { TrackerManager } from 'src/providers/tracker-manager';
 import { NavigationExtras, Router, ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore'
 
 @Component({
   selector: 'app-list',
@@ -25,7 +26,7 @@ export class ListPage implements OnInit {
 
   clickCounter: number = 0;
 
-  constructor(private plt: Platform, private trackerManager: TrackerManager, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private plt: Platform, private trackerManager: TrackerManager, private router: Router, private activatedRoute: ActivatedRoute, private firestore: AngularFirestore) {
     if (!localStorage.getItem('user')) this.router.navigateByUrl('/login')
 
     this.activatedRoute.queryParams.subscribe(params => {
@@ -67,21 +68,25 @@ export class ListPage implements OnInit {
     this.centerY = this.originY + this.canvasElement.height / 2;
     this.ctx = this.canvasElement.getContext('2d');
 
-    this.trackerManager.updateTrackersFromLocalStorage().then(() => {
-      this.trackers = this.trackerManager.getTrackers();
-
-      for (var ind in this.trackers) {
-        this.icons.push({ x: 0, y: 0, title: this.trackers[ind].name, color: "rgb(" + Math.random() * 99 + "," + Math.random() * 99 + "," + Math.random() * 99 + ")", icon: this.trackers[ind].icon });
-      }
-      this.draw();
-    });
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.firestore.collection('users').doc(user.uid).get().subscribe((res) => {
+        let trackers = res.data();
+        let arr = []
+        Object.keys(trackers).forEach((i) => { arr.push(JSON.parse(trackers[i])) })
+        this.trackerManager.updateTrackersFromLocalStorage(arr).then(() => {
+          this.trackers = this.trackerManager.getTrackers();
+          for (var ind in this.trackers) {
+            this.icons.push({ x: 0, y: 0, title: this.trackers[ind].name, color: "rgb(" + Math.random() * 99 + "," + Math.random() * 99 + "," + Math.random() * 99 + ")", icon: this.trackers[ind].icon });
+          }
+          this.draw();
+        });
+    })
   }
 
   onPlusClick() {
     this.clickCounter++;
     this.router.navigateByUrl("/new-item");
   }
-
 
   addedMetric() {
     let t = this.trackerManager.getTrackers();

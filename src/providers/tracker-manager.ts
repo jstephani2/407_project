@@ -12,7 +12,7 @@ export class TrackerManager {
     protected highest_id: number = 0;
 
     constructor(
-        protected storage: Storage
+        protected storage: Storage,
     ) { }
 
     // Return array of trackers
@@ -41,7 +41,9 @@ export class TrackerManager {
     }
 
     // Get trackers from storage
-    updateTrackersFromLocalStorage(): Promise<any> {
+    updateTrackersFromLocalStorage(cloudData): Promise<any> {
+        // Aggressive merging policy - just use cloud data
+        this.storage.set(this.LOCAL_STORAGE_KEY, cloudData)
         return this.storage.get(this.LOCAL_STORAGE_KEY).then((trackers) => {
             for (var ind in trackers) {
                 var curr = new Tracker();
@@ -52,7 +54,7 @@ export class TrackerManager {
                 }
             }
             return this.trackers;
-        });
+        })
     }
 
     // Save tracker array to storage

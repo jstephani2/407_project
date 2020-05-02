@@ -19,6 +19,8 @@ export class ListPage implements OnInit {
   saveX: number;
   saveY: number;
   trackers: any;
+  lastTouchX: number;
+  lastTouchY: number;
   icons: Array<{ x: number, y: number, title: string, color: string, icon: string }> = [];
   iconsAlternate: any;
   lastBubble: string;
@@ -44,7 +46,7 @@ export class ListPage implements OnInit {
           for (var ind in this.trackers) {
             this.icons.push({ x: 0, y: 0, title: this.trackers[ind].name, color: "rgb(" + Math.random() * 99 + "," + Math.random() * 99 + "," + Math.random() * 99 + ")", icon: this.trackers[ind].icon });
           }
-          this.draw();
+          setTimeout(this.draw,2000);
         });        
       }
     });
@@ -80,19 +82,7 @@ export class ListPage implements OnInit {
     this.router.navigateByUrl("/new-item");
   }
 
-
-  addedMetric() {
-    let t = this.trackerManager.getTrackers();
-    if (t != null) {
-      // for (let i = 0; i < t.size; i++) {
-      //   this.icons.push({x:0,y:0,title:t[i][0],why:t[i][1],color:"rgb("+Math.random()*99+","+Math.random()*99+","+Math.random()*99+")"});
-      // }
-    }
-    this.draw();
-  }
-
   draw() {
-    //this.addedMetric();
     this.ctx.clearRect(this.originX, this.originY, this.canvasElement.width, this.canvasElement.height);
     for (let i = 0; i < this.icons.length; i++) {
       if (i == 0) {
@@ -110,17 +100,27 @@ export class ListPage implements OnInit {
       this.ctx.fill();
       this.ctx.fillStyle = "white";
       this.ctx.textAlign = "center";
-      this.ctx.fillText(this.icons[i].title, this.icons[i].x, this.icons[i].y, 96);
-      if (this.icons[i].x - this.canvasElement.width > 0) {
-        let expansion = this.icons[i].x - this.canvasElement.width;
-        this.canvasElement.width += expansion * 4;
-        this.canvasElement.height += expansion * 4;
-        this.centerX = this.originX + this.canvasElement.width / 2;
-        this.centerY = this.originY + this.canvasElement.height / 2;
-        i = 0;
-      }
+      this.ctx.font='30px FontAwesome';
+      //this.ctx.fillText(this.icons[i].icon, this.icons[i].x, this.icons[i].y);
+      this.ctx.fillText('\uf434', this.icons[i].x, this.icons[i].y);
     }
-    //requestAnimationFrame(this.draw.bind(this));
+  }
+
+  startTouch(event) {
+    this.lastTouchX = event.touches[0].pageX;
+    this.lastTouchY = event.touches[0].pageY;
+  }
+
+  scroll(event) {
+    this.centerX += event.touches[0].pageX - this.lastTouchX;
+    this.centerY += event.touches[0].pageY - this.lastTouchY;
+    this.lastTouchX = event.touches[0].pageX;
+    this.lastTouchY = event.touches[0].pageY;
+    this.draw();
+  }
+
+  endTouch(event) {
+
   }
 
   detect(event) {
@@ -137,7 +137,6 @@ export class ListPage implements OnInit {
         break;
       }
     }
-    this.addedMetric();
   }
 
   // Go to log page on circle click

@@ -271,7 +271,7 @@ export class DatagraphicsPage implements OnInit {
   }
 
   detect(event) {
-
+    console.log("click");
   }
 
 }

@@ -13,12 +13,15 @@ const routes: Routes = [
   {
     path: 'new-log',
     loadChildren: () => import('./new-log/new-log.module').then( m => m.NewLogPageModule)
-  },  {
+  },
+  {
     path: 'datagraphics',
     loadChildren: () => import('./datagraphics/datagraphics.module').then( m => m.DatagraphicsPageModule)
   },
-
-
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
 ];
 @NgModule({
   imports: [

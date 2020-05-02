@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Measure } from 'src/providers/measure';
 import moment from 'moment';
 import { Tracker } from 'src/providers/tracker';
+import { AngularFirestore } from '@angular/fire/firestore'
 
 @Component({
   selector: 'app-new-log',
@@ -15,7 +16,8 @@ export class NewLogPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private firestore: AngularFirestore
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -53,6 +55,12 @@ export class NewLogPage implements OnInit {
         measure.curr_entry = "";
       }
     }
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.firestore.collection('users').doc(user.uid).set({
+      [this.tracker.id]: JSON.stringify(this.tracker)
+    })
+
     let navigationExtras : NavigationExtras = {
       state: {
           tracker: this.tracker,

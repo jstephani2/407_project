@@ -133,7 +133,6 @@ export class ListPage implements OnInit {
     let buttonHit = false;
     for (let i = 0; i < this.icons.length; i++) {
       if (Math.sqrt(Math.pow(this.icons[i].x - this.saveX, 2) + Math.pow(this.icons[i].y - this.saveY, 2)) < 50) {
-        console.log(this.icons[i].title);
         this.onMetricClick(i);
         buttonHit = true;
         break;

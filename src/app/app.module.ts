@@ -12,13 +12,22 @@ import { AppComponent } from './app.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 
+// Firebase imports
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
+
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
     imports: [BrowserModule, IonicModule.forRoot(),
         AppRoutingModule,
         IonicStorageModule.forRoot(),
-        FontAwesomeModule
+        FontAwesomeModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireAuthModule,
+        AngularFireDatabaseModule,
     ],
     providers: [
         StatusBar,

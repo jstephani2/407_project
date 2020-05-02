@@ -26,6 +26,8 @@ export class ListPage implements OnInit {
   clickCounter: number = 0;
 
   constructor(private plt: Platform, private trackerManager: TrackerManager, private router: Router, private activatedRoute: ActivatedRoute) {
+    if (!localStorage.getItem('user')) this.router.navigateByUrl('/login')
+
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         var state = this.router.getCurrentNavigation().extras.state;
@@ -45,7 +47,7 @@ export class ListPage implements OnInit {
             this.icons.push({ x: 0, y: 0, title: this.trackers[ind].name, color: "rgb(" + Math.random() * 99 + "," + Math.random() * 99 + "," + Math.random() * 99 + ")", icon: this.trackers[ind].icon });
           }
           this.draw();
-        });        
+        });
       }
     });
   }
